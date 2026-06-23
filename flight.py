@@ -1,15 +1,3 @@
-
-#need to know possible departing airports and their corrresponding arrivals. 
-"""
-Limit to three trips each have their corresponding flights
-Each trip has can have diff routes
-Thought process is to put routes in list [Paris Charles de Gaulle Airport, Heathrow Airport]
-Flight 1:
-tuple = () -> ([Paris Charles de Gaulle Airport, Heathrow Airport], )
-
-
-"""
-
 def format_flight_data(flight_data):
 
   flight_options = []
@@ -46,7 +34,9 @@ def format_flight_data(flight_data):
 
     flight_options.append(option)
 
-  print(flight_options)
+  return flight_options
+
+
 
 flight_data  = {
   "search_metadata": {
@@ -1143,4 +1133,3 @@ flight_data  = {
   ]
 }
 
-format_flight_data(flight_data)
