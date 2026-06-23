@@ -1,28 +1,81 @@
 from flight import format_flight_data
+from datetime import datetime
 import serpapi
+import pandas as pd
 
 
-print("Welcome to Waypoint")
-#Ensure that origin and detination have only 3 letters
-origin = input("What airport are you departing from (e.g. JFK): ")
-destination = input("What airport are you arriving at (e.g. LAG): ")
-#Format in date
-from_date = input("When do you plan on leaving (yyyy-mm-dd): ")
-to_date = input("When do you plan on returning (yyyy-mm-dd): ")
-budget = int(input("What is your budget: $"))
-print(type(budget))
 
-client = serpapi.Client(api_key="")
-results = client.search({
-  "engine": "google_flights",
-  "departure_id": origin,
-  "arrival_id": destination,
-  "currency": "USD",
-  "type": "1",
-  "outbound_date": from_date,
-  "return_date" : to_date
-})
+def main():
+  valid_airport_names = load_airports()
 
-data = format_flight_data(results)
+  print("=" * 30) 
+  print("|   Welcome to Waypoint!!!   |")
+  print("=" * 30) 
 
-print(data)
+  origin = validate_code("What airport are you departing from (e.g. JFK): ", valid_airport_names)
+  destination = validate_code("What airport are you arriving at (e.g. LGA): ", valid_airport_names)
+
+  while True:
+    from_date = input("When do you plan on leaving (yyyy-mm-dd): ").strip()
+    to_date = input("When do you plan on returning (yyyy-mm-dd): ").strip()
+
+    from_date_obj = validate_date(from_date)
+    to_date_obj = validate_date(to_date)
+    if not from_date_obj or not to_date_obj:
+      print("Invalid Date format. Please use yyyy-mm-dd")
+    elif from_date_obj >= to_date_obj:
+      print("Return Date must be after departure date")
+    else:
+      break
+  
+  budget = validate_budget("Enter your budget: $")
+
+# client = serpapi.Client(api_key="")
+# results = client.search({
+#   "engine": "google_flights",
+#   "departure_id": origin,
+#   "arrival_id": destination,
+#   "currency": "USD",
+#   "type": "1",
+#   "outbound_date": from_date,
+#   "return_date" : to_date
+# })
+
+# data = format_flight_data(results)
+
+# print(data)
+
+def load_airports():
+  try:
+    df = pd.read_csv("iata-icao.csv")
+    return set(df['iata'].dropna().str.upper())
+  except Exception as e:
+    print("Error Opening File: ", e)
+
+def validate_code(text, valid_airport_names):
+
+  while True:
+    code = input(text).strip().upper()
+    if code not in valid_airport_names:
+      print("Enter a valid airport code")
+    else:
+      return code
+
+def validate_date(date_str):
+  try:
+    return datetime.strptime(date_str, "%Y-%m-%d")  
+  except ValueError:
+    return None
+
+def validate_budget(text):
+  while True:
+    try:
+      budget = float(input(text).strip())
+      if budget <= 0:
+        print("Budget must be greater than 0")
+      else:
+        return budget
+    except ValueError:
+      print("Enter a valid number")
+
+main()
