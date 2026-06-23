@@ -2,12 +2,12 @@
 
 Want to be able to generate a full itinerary given:
 - Duration (xx/xx/xxxx - xx/xx/xxxx)
-- Location (city?)
+- Location (What airport are you flying out of? to?[city])
 - Budget (in usd?)
 
 
 APIs?
-- GoogleMaps for directions and places
-- Flight API (Suggestions: FlightAware [AeroAPI], Flightradar24 API, or The Aviation Edge API)
+- Places API (Google Maps API)
+- Flight API (SerpAPI)
 - Weather API (OpenWeather)
-- Hotel API
+- Hotel API (SerpAPI)
