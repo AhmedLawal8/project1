@@ -1,4 +1,4 @@
-import flight
+from flight import format_flight_data
 import serpapi
 
 
@@ -15,12 +15,14 @@ print(type(budget))
 client = serpapi.Client(api_key="")
 results = client.search({
   "engine": "google_flights",
-  "departure_id": "CDG",
-  "arrival_id": "AUS",
+  "departure_id": origin,
+  "arrival_id": destination,
   "currency": "USD",
-  "type": "2",
-  "outbound_date": "2026-06-24"
+  "type": "1",
+  "outbound_date": from_date,
+  "return_date" : to_date
 })
-best_flights = results["best_flights"]
 
-print(best_flights)
+data = format_flight_data(results)
+
+print(data)
