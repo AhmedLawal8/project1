@@ -1,13 +1,12 @@
 from datetime import datetime
-from places import calculate_max_results, get_top_attractions
 import os
 
 import pandas as pd
 import serpapi
 from dotenv import load_dotenv
 
-from flight import format_flight_data
-from config import SERP_API_KEY
+from flight import get_flight_data
+from places import calculate_max_results, get_top_attractions
 
 def main():
 
@@ -34,19 +33,8 @@ def main():
       break
   
   budget = validate_budget("Enter your budget: $")
-
-  client = serpapi.Client(api_key=serp_api_key)
-  results = client.search({
-    "engine": "google_flights",
-    "departure_id": origin,
-    "arrival_id": destination,
-    "currency": "USD",
-    "type": "1",
-    "outbound_date": from_date,
-    "return_date" : to_date
-  })
   
-  data = format_flight_data(results)
+  data = get_flight_data(origin, destination, from_date, to_date)
   
   print(data)
   print(get_top_attractions(destination, from_date, to_date))
