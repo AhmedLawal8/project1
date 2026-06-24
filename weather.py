@@ -1,15 +1,21 @@
 import requests
+import os
+
+from dotenv import load_dotenv
 
 # Use the free 2.5 current weather endpoint
 url = "https://api.openweathermap.org/data/2.5/weather"
 
+load_dotenv()
+
 # It's cleaner to pass parameters as a dictionary
+OPEN_WEATHER_KEY = os.getenv("OPEN_WEATHER_KEY")
 params = {
     "lat": 52.2297,
     "lon": 21.0122,
     "units": "metric",
     "lang": "en",
-    "appid": "" # Replace this!
+    "appid": OPEN_WEATHER_KEY # Replace this!
 }
 
 response = requests.get(url, params=params)
