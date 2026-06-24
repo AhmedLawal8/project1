@@ -7,10 +7,9 @@ import serpapi
 from dotenv import load_dotenv
 
 from flight import format_flight_data
+from config import SERP_API_KEY
 
 def main():
-  load_dotenv()
-  serp_api_key = os.getenv("SERP_API_KEY")
 
   valid_airport_names = load_airports()
 

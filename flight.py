@@ -1,5 +1,20 @@
-def format_flight_data(flight_data):
+from config import SERP_API_KEY
+import serpapi
 
+def get_flight_data(origin, destination, from_date, to_date):
+
+  client = serpapi.Client(api_key=SERP_API_KEY)
+  
+  flight_data = client.search({
+    "engine": "google_flights",
+    "departure_id": origin,
+    "arrival_id": destination,
+    "currency": "USD",
+    "type": "1",
+    "outbound_date": from_date,
+    "return_date" : to_date
+  })
+ 
   flight_options = []
 
   for flight in flight_data.get("best_flights", []):
@@ -35,4 +50,3 @@ def format_flight_data(flight_data):
     flight_options.append(option)
 
   return flight_options
-
