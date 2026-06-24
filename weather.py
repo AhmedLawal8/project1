@@ -46,6 +46,3 @@ def get_weather(origin_date, destination_date, lat, lon, place):
     weather_data.append(weather)
 
   return weather_data
-
-
-get_weather("2026-06-30", "2026-06-30", "42.1167", "-86.4542", "JFK")
