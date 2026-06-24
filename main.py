@@ -1,4 +1,5 @@
 from datetime import datetime
+from places import calculate_max_results, get_top_attractions
 import os
 
 import pandas as pd
@@ -44,10 +45,11 @@ def main():
     "outbound_date": from_date,
     "return_date" : to_date
   })
-
+  
   data = format_flight_data(results)
   
   print(data)
+  print(get_top_attractions(destination, from_date, to_date))
 
 def load_airports():
   try:
