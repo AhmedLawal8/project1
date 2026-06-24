@@ -1,49 +1,51 @@
 import requests
 import os
 
-from dotenv import load_dotenv
+from config import VISUAL_CROSSING_KEY
 
-# Use the free 2.5 current weather endpoint
-url = "https://api.openweathermap.org/data/2.5/weather"
+def get_weather(origin_date, destination_date, lat, lon, place):
 
-load_dotenv()
+  base_url = f"https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/{lat},{lon}/{origin_date}/{destination_date}"
 
-# It's cleaner to pass parameters as a dictionary
-OPEN_WEATHER_KEY = os.getenv("OPEN_WEATHER_KEY")
-params = {
-    "lat": 52.2297,
-    "lon": 21.0122,
-    "units": "metric",
-    "lang": "en",
-    "appid": OPEN_WEATHER_KEY # Replace this!
-}
+  params = {
+    "unitGroup" : "us",
+    "key" : VISUAL_CROSSING_KEY,
+    "contentType" : "json",
+    "include" : "days"
+  }
 
-response = requests.get(url, params=params)
+  try:
 
-if response.status_code == 200:
-    print(response.json())
-else:
-    print(f"Error {response.status_code}: {response.text}")
+    response = requests.get(base_url, params=params)
+    data = response.json()
+
+    print("Weather Data Success!\n")
+  
+  except requests.exceptions.HTTPError as e:
+    print(f"HTTP Error: {e}")
+  except requests.exceptions.ConnectionError as e:
+     print(f"Connection Error: {e}")
+  except requests.exceptions.Timeout:
+    print(f"Request Timeout: {e}")
+  except requests.exceptions.RequestException as e:
+    print(f"An unexpected error has occured: {e}")
+
+  weather_data = []
+  for day in data.get('days', []):
+    weather = {
+      "place" : place,
+      "date" : day.get("datetime"),
+      "temp_max" : day.get("tempmax"),
+      "temp_min" : day.get("tempmin")
+    }
+    current_condition = day.get("description")
+    if current_condition != "":
+      weather["description"] = current_condition
+    else:
+      weather["description"] = "No condition specified"
+    weather_data.append(weather)
+
+  return weather_data
 
 
-
-# example_response = 
-# {'coord': {'lon': 21.0118, 'lat': 52.2298},
-#  'weather': [{'id': 804, 'main': 'Clouds',
-#   'description': 'overcast clouds', 'icon': '04n'}],
-#    'base': 'stations',
-#     'main':
-#      {'temp': 19.67, 
-#      'feels_like': 19.29, 
-#      'temp_min': 17.02, 
-#      'temp_max': 21.07, 
-#      'pressure': 1019, 
-#      'humidity': 61, 
-#      'sea_level': 1019, 
-#      'grnd_level': 1009}, 
-#      'visibility': 10000, 
-#      'wind': {'speed': 1.69, 'deg': 338, 'gust': 3.29}, 
-#      'clouds': {'all': 85}, 
-#      'dt': 1782245598, 
-#      'sys': {'type': 2, 'id': 2032856, 'country': 'PL', 'sunrise': 1782180890, 'sunset': 1782241278}, 
-#      'timezone': 7200, 'id': 756135, 'name': 'Warsaw', 'cod': 200}
+get_weather("2026-06-30", "2026-06-30", "42.1167", "-86.4542", "JFK")
