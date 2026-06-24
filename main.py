@@ -1,11 +1,16 @@
-from flight import format_flight_data
 from datetime import datetime
-import serpapi
+import os
+
 import pandas as pd
+import serpapi
+from dotenv import load_dotenv
 
-
+from flight import format_flight_data
 
 def main():
+  load_dotenv()
+  serp_api_key = os.getenv("SERP_API_KEY")
+
   valid_airport_names = load_airports()
 
   print("=" * 30) 
@@ -30,20 +35,20 @@ def main():
   
   budget = validate_budget("Enter your budget: $")
 
-# client = serpapi.Client(api_key="")
-# results = client.search({
-#   "engine": "google_flights",
-#   "departure_id": origin,
-#   "arrival_id": destination,
-#   "currency": "USD",
-#   "type": "1",
-#   "outbound_date": from_date,
-#   "return_date" : to_date
-# })
+  client = serpapi.Client(api_key=serp_api_key)
+  results = client.search({
+    "engine": "google_flights",
+    "departure_id": origin,
+    "arrival_id": destination,
+    "currency": "USD",
+    "type": "1",
+    "outbound_date": from_date,
+    "return_date" : to_date
+  })
 
-# data = format_flight_data(results)
-
-# print(data)
+  data = format_flight_data(results)
+  
+  print(data)
 
 def load_airports():
   try:
