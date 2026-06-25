@@ -19,7 +19,7 @@ def get_weather(origin_date, destination_date, lat, lon, place):
     response = requests.get(base_url, params=params)
     data = response.json()
 
-    print("Weather Data Success!\n")
+    print("Weather Data Success!")
   
   except requests.exceptions.HTTPError as e:
     print(f"HTTP Error: {e}")

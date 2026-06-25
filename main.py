@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import sys
 
 import pandas as pd
 import serpapi
@@ -7,10 +8,19 @@ from dotenv import load_dotenv
 
 from flight import get_flight_data
 from places import calculate_max_results, get_top_attractions
+from weather import get_weather
 
 def main():
 
-  valid_airport_names = load_airports()
+  #Store Airport DataFrame 
+  try:
+    df = pd.read_csv("iata-icao.csv").set_index("iata")  
+
+  except Exception as e:
+    print("Error Opening File: ", e)
+    sys.exit(1)
+
+  valid_airport_names = set(df.index.dropna().str.upper())
 
   print("=" * 30) 
   print("|   Welcome to Waypoint!!!   |")
@@ -39,13 +49,17 @@ def main():
   print(data)
   print(get_top_attractions(destination, from_date, to_date))
 
-def load_airports():
-  try:
-    df = pd.read_csv("iata-icao.csv")
-    return set(df['iata'].dropna().str.upper())
-  except Exception as e:
-    print("Error Opening File: ", e)
+  #Origin airport location data 0 for lat 1 for lon
+  location_origin = get_lat_lon(df, origin)
+  location_destination = get_lat_lon(df, destination)
 
+  #location_origin[0] for lat & location_origin[1] for lon
+  weather_origin = get_weather(from_date, from_date, location_origin[0], location_origin[1], origin)
+  weather_destination = get_weather(from_date, to_date, location_destination[0], location_destination[1], destination)
+  print(weather_origin)
+  print(weather_destination)
+
+  
 def validate_code(text, valid_airport_names):
 
   while True:
@@ -71,5 +85,10 @@ def validate_budget(text):
         return budget
     except ValueError:
       print("Enter a valid number")
+
+def get_lat_lon(df, code):
+  lat = df.loc[code, "latitude"]
+  lon = df.loc[code, "longitude"]
+  return lat, lon
 
 main()
