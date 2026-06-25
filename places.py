@@ -22,7 +22,7 @@ def calculate_max_results(start_date_str: str, end_date_str: str):
         if duration <= 0:
             duration = 1
             
-        calculated_results = duration * 2
+        calculated_results = duration * 3
         
         # Google Places API (New) maxResultCount must be between 1 and 20
         return min(calculated_results, 20)

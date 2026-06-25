@@ -47,9 +47,9 @@ def main():
   
   flight_data = get_flight_data(origin, destination, from_date, to_date)
   
-  print(flight_data)
+  # print(flight_data)
   places = get_top_attractions(destination, from_date, to_date)
-  print(places)
+  # print(places)
   #Origin airport location data 0 for lat 1 for lon
   location_origin = get_lat_lon(df, origin)
   location_destination = get_lat_lon(df, destination)
@@ -57,10 +57,15 @@ def main():
   #location_origin[0] for lat & location_origin[1] for lon
   weather_origin = get_weather(from_date, from_date, location_origin[0], location_origin[1], origin)
   weather_destination = get_weather(from_date, to_date, location_destination[0], location_destination[1], destination)
-  print(weather_origin)
-  print(weather_destination)
+  print("Weather Data Success!")
   
-  generate_itinerary(flight_data, weather_origin, weather_destination, places)
+  # print(weather_origin)
+  # print(weather_destination)
+  
+  print("Loading response...")
+  res = generate_itinerary(flight_data, weather_origin, weather_destination, places)
+  print(res)
+  print(type(res))
 
 def validate_code(text, valid_airport_names):
 

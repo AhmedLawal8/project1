@@ -47,5 +47,6 @@ def get_flight_data(origin, destination, from_date, to_date):
       option["airlines"].add(trip["airline"])
 
     flight_options.append(option)
-
+    
+  print("Generated Flight Options Sucess!")
   return flight_options

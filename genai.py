@@ -7,10 +7,79 @@ def generate_itinerary(flight_data, weather_data_origin, weather_data_destinatio
 
   interaction = client.interactions.create(
       model="gemini-2.5-flash",
-      input= f'Tell me about these jsons {flight_data}, {weather_data_origin}, {weather_data_destination}, {places}'
+
+      system_instruction = f"""
+      You are a professional travel planning assistant.
+
+      Your task is to generate a clear, structured travel itinerary based on the data provided.
+      You will be given:
+      1. A list of Flight Information that includes (price, duration, routes from and to targeted destination, times, airline, and airplane)
+      2. Weather information for the origin location
+      3. Weather forecast for the destination for the travel dates
+      4. A list of recommended places/attractions at the destination
+      
+      Requirements: 
+
+      - Create a day-by-day itinerary for the trip.
+      - Align activities with weather conditions (e.g., outdoor activities on good weather days, indoor activities on bad weather days).
+      - Use flight arrival time to plan Day 1 realistically.
+      - Include rest time after long flights.
+      - Prioritize efficiency (group nearby attractions together).
+      - Do NOT assume missing data—only use what is provided.
+      - If weather is uncertain, mention flexibility in plans.
+      
+      Output Format:
+      Return a structured response in this format:
+
+      TITLE:
+      - Trip summary (origin → destination + dates)
+
+      FLIGHT SUMMARY:
+      - Key outbound and return flight details
+
+      WEATHER SUMMARY:
+      - Origin weather (departure day)
+      - Destination weather overview during trip
+
+      ITINERARY:
+
+      Day 1:
+      - Morning:
+      - Afternoon:
+      - Evening:
+
+      Day 2:
+      - Morning:
+      - Afternoon:
+      - Evening:
+
+      (Continue for full trip duration)
+
+      TIPS:
+      - Packing suggestions based on weather
+      - Travel optimization tips
+      - Any warnings or considerations
+      """,
+
+      input= f"""
+      Input Data:
+      
+      POSSIBLE FLIGHTS: 
+      {flight_data}
+      
+      ORIGIN WEATHER:
+      {weather_data_origin} 
+      
+      DESTINATION WEATHER:
+      {weather_data_destination}
+      
+      PLACES DATA: 
+      {places}
+      
+      """
   )
-  
-  print(interaction.output_text)
+
+  return interaction.output_text
 
 
 
