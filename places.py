@@ -1,9 +1,10 @@
 import os
 import requests
 from datetime import datetime
-from typing import List, Dict, Any
 
-def calculate_max_results(start_date_str: str, end_date_str: str) -> int:
+from config import GOOGLE_PLACES_API_KEY
+
+def calculate_max_results(start_date_str: str, end_date_str: str):
     """
     Calculates max_results as 2 * duration of the trip in days.
     Caps the result at 20 due to Google Places API constraints.
@@ -30,7 +31,7 @@ def calculate_max_results(start_date_str: str, end_date_str: str) -> int:
         print(f"Error parsing dates: {e}. Defaulting max_results to 10.")
         return 10
 
-def get_top_attractions(airport_code: str, start_date: str, end_date: str) -> List[Dict[str, Any]]:
+def get_top_attractions(airport_code: str, start_date: str, end_date: str):
     """
     Fetches top attractions for the city served by a given airport code.
     The number of results fetched scales with the length of the trip.
@@ -41,11 +42,8 @@ def get_top_attractions(airport_code: str, start_date: str, end_date: str) -> Li
         end_date (str): Return date in "YYYY/MM/DD" format.
         
     Returns:
-        List[Dict[str, Any]]: A list of dictionaries containing attraction details.
+        A list of dictionaries containing attraction details.
     """
-    api_key = os.getenv("GOOGLE_PLACES_API_KEY")
-    if not api_key:
-        raise ValueError("GOOGLE_PLACES_API_KEY environment variable not set.")
 
     # Calculate dynamic max results based on trip duration
     max_results = calculate_max_results(start_date, end_date)
@@ -55,7 +53,7 @@ def get_top_attractions(airport_code: str, start_date: str, end_date: str) -> Li
 
     headers = {
         "Content-Type": "application/json",
-        "X-Goog-Api-Key": api_key,
+        "X-Goog-Api-Key": GOOGLE_PLACES_API_KEY,
         "X-Goog-FieldMask": "places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.priceLevel,places.types"
     }
 
