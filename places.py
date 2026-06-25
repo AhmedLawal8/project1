@@ -5,10 +5,7 @@ from datetime import datetime
 from config import GOOGLE_PLACES_API_KEY
 
 def calculate_max_results(start_date_str: str, end_date_str: str):
-    """
-    Calculates max_results as 2 * duration of the trip in days.
-    Caps the result at 20 due to Google Places API constraints.
-    """
+
     try:
         # Parse the YYYY-MM-DD date strings
         date_format = "%Y-%m-%d"
@@ -32,18 +29,6 @@ def calculate_max_results(start_date_str: str, end_date_str: str):
         return 10
 
 def get_top_attractions(airport_code: str, start_date: str, end_date: str):
-    """
-    Fetches top attractions for the city served by a given airport code.
-    The number of results fetched scales with the length of the trip.
-    
-    Args:
-        airport_code (str): The 3-letter IATA airport code (e.g., "JFK").
-        start_date (str): Departure date in "YYYY/MM/DD" format.
-        end_date (str): Return date in "YYYY/MM/DD" format.
-        
-    Returns:
-        A list of dictionaries containing attraction details.
-    """
 
     # Calculate dynamic max results based on trip duration
     max_results = calculate_max_results(start_date, end_date)
@@ -91,14 +76,3 @@ def get_top_attractions(airport_code: str, start_date: str, end_date: str):
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data from Google Places API: {e}")
         return []
-
-# if __name__ == "__main__":
-#     # Test case: 4-day trip should equal 8 results
-#     test_airport = "JFK"
-#     start = "2026-07-01"
-#     end = "2026-07-05"
-    
-#     results = get_top_attractions(test_airport, start, end)
-#     print(f"\nFound {len(results)} attractions:")
-#     for idx, place in enumerate(results, 1):
-#         print(f"{idx}. {place['name']} ({place['price_level']})")

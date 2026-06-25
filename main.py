@@ -43,7 +43,6 @@ def main():
     else:
       break
   
-  budget = validate_budget("Enter your budget: $")
   
   flight_data = get_flight_data(origin, destination, from_date, to_date)
   
@@ -65,7 +64,7 @@ def main():
   print("Loading response...")
   res = generate_itinerary(flight_data, weather_origin, weather_destination, places)
   print(res)
-  print(type(res))
+
 
 def validate_code(text, valid_airport_names):
 
@@ -82,16 +81,16 @@ def validate_date(date_str):
   except ValueError:
     return None
 
-def validate_budget(text):
-  while True:
-    try:
-      budget = float(input(text).strip())
-      if budget <= 0:
-        print("Budget must be greater than 0")
-      else:
-        return budget
-    except ValueError:
-      print("Enter a valid number")
+# def validate_budget(text):
+#   while True:
+#     try:
+#       budget = float(input(text).strip())
+#       if budget <= 0:
+#         print("Budget must be greater than 0")
+#       else:
+#         return budget
+#     except ValueError:
+#       print("Enter a valid number")
 
 def get_lat_lon(df, code):
   lat = df.loc[code, "latitude"]

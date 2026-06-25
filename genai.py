@@ -35,7 +35,7 @@ def generate_itinerary(flight_data, weather_data_origin, weather_data_destinatio
       - Trip summary (origin → destination + dates)
 
       FLIGHT SUMMARY:
-      - Key outbound and return flight details
+      - Key outbound flight details
 
       WEATHER SUMMARY:
       - Origin weather (departure day)
