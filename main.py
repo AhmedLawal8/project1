@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from flight import get_flight_data
 from places import calculate_max_results, get_top_attractions
 from weather import get_weather
+from genai import generate_itinerary
 
 def main():
 
@@ -44,11 +45,11 @@ def main():
   
   budget = validate_budget("Enter your budget: $")
   
-  data = get_flight_data(origin, destination, from_date, to_date)
+  flight_data = get_flight_data(origin, destination, from_date, to_date)
   
-  print(data)
-  print(get_top_attractions(destination, from_date, to_date))
-
+  print(flight_data)
+  places = get_top_attractions(destination, from_date, to_date)
+  print(places)
   #Origin airport location data 0 for lat 1 for lon
   location_origin = get_lat_lon(df, origin)
   location_destination = get_lat_lon(df, destination)
@@ -58,7 +59,8 @@ def main():
   weather_destination = get_weather(from_date, to_date, location_destination[0], location_destination[1], destination)
   print(weather_origin)
   print(weather_destination)
-
+  
+  generate_itinerary(flight_data, weather_origin, weather_destination, places)
 
 def validate_code(text, valid_airport_names):
 

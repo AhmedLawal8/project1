@@ -46,7 +46,6 @@ def get_flight_data(origin, destination, from_date, to_date):
       #Store all airlines used
       option["airlines"].add(trip["airline"])
 
-
     flight_options.append(option)
 
   return flight_options
