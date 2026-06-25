@@ -27,7 +27,7 @@ def main():
   print("=" * 30) 
 
   origin = validate_code("What airport are you departing from (e.g. JFK): ", valid_airport_names)
-  destination = validate_code("What airport are you arriving at (e.g. LGA): ", valid_airport_names)
+  destination = validate_code("What airport are you arriving at (e.g. LAX): ", valid_airport_names)
 
   while True:
     from_date = input("When do you plan on leaving (yyyy-mm-dd): ").strip()
@@ -59,7 +59,7 @@ def main():
   print(weather_origin)
   print(weather_destination)
 
-  
+
 def validate_code(text, valid_airport_names):
 
   while True:
