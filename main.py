@@ -11,8 +11,12 @@ from places import calculate_max_results, get_top_attractions
 from weather import get_weather
 from genai import generate_itinerary
 
-def main():
 
+from rich.console import Console
+from rich.markdown import Markdown
+
+def main():
+  console = Console()
   #Store Airport DataFrame 
   try:
     df = pd.read_csv("iata-icao.csv").set_index("iata")  
@@ -44,26 +48,25 @@ def main():
       break
   
   
+
+
   flight_data = get_flight_data(origin, destination, from_date, to_date)
-  
-  # print(flight_data)
   places = get_top_attractions(destination, from_date, to_date)
-  # print(places)
-  #Origin airport location data 0 for lat 1 for lon
   location_origin = get_lat_lon(df, origin)
   location_destination = get_lat_lon(df, destination)
-
-  #location_origin[0] for lat & location_origin[1] for lon
   weather_origin = get_weather(from_date, from_date, location_origin[0], location_origin[1], origin)
   weather_destination = get_weather(from_date, to_date, location_destination[0], location_destination[1], destination)
   print("Weather Data Success!")
-  
+
   # print(weather_origin)
   # print(weather_destination)
-  
+  # print(flight_data)
+  # print(places)
+  #location_origin[0] for lat & location_origin[1] for lon
   print("Loading response...")
-  res = generate_itinerary(flight_data, weather_origin, weather_destination, places)
-  print(res)
+  res = Markdown(generate_itinerary(flight_data, weather_origin, weather_destination, places))
+
+  console.print(res)
 
 
 def validate_code(text, valid_airport_names):
