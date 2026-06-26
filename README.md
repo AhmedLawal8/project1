@@ -84,6 +84,8 @@ Not sure of your airport code? Check `iata-icao.csv` in the project root for the
 Waypoint fetches everything in the background and hands you back a structured day-by-day plan.
 
 ## Project Structure
+
+```
 project1/
 │
 ├── main.py
@@ -107,6 +109,7 @@ project1/
 │   └── ...
 │
 └── waypoint.db
+```
 
 ## Testing 
 Run all unit tests fromt he project root:
