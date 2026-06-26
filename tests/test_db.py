@@ -10,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from src.db import Base, insert_itinerary, get_itinerary
 from datetime import date
 
+
 class TestDB(unittest.TestCase):
 
     def setUp(self):

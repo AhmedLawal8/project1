@@ -1,6 +1,7 @@
 from src.config import SERP_API_KEY
 import serpapi
 
+
 def parse_flights(flight_data):
     flight_options = []
 
@@ -37,6 +38,7 @@ def parse_flights(flight_data):
 
     return flight_options
 
+
 def get_flight_data(origin, destination, from_date, to_date):
 
     client = serpapi.Client(api_key=SERP_API_KEY)
@@ -61,33 +63,32 @@ def get_flight_data(origin, destination, from_date, to_date):
 
     departure_token = outbound_options[0].get("departure_token")
     best_outbound = parse_flights(outbound_options[:1])
-    
+
     best_return = []
 
     if departure_token:
-      return_data = client.search({
-        "engine": "google_flights",
-        "departure_id": origin,
-        "arrival_id": destination,
-        "currency": "USD",
-        "type": "1",
-        "outbound_date": from_date,
-        "return_date": to_date,
-        "departure_token": departure_token,
-      })
+        return_data = client.search(
+            {
+                "engine": "google_flights",
+                "departure_id": origin,
+                "arrival_id": destination,
+                "currency": "USD",
+                "type": "1",
+                "outbound_date": from_date,
+                "return_date": to_date,
+                "departure_token": departure_token,
+            }
+        )
 
-      return_options = return_data.get("best_flights", [])
+        return_options = return_data.get("best_flights", [])
 
-      if not return_options:
-          print("No return flights found. ")
-      else:
-          best_return = parse_flights(return_options[:1])
+        if not return_options:
+            print("No return flights found. ")
+        else:
+            best_return = parse_flights(return_options[:1])
 
     else:
         print("No departure token found, skipping return flight lookup.")
 
     print("Generated Flight Options Sucess!")
-    return {"outbound" : best_outbound, "return" : best_return}
-    
-    
-
+    return {"outbound": best_outbound, "return": best_return}

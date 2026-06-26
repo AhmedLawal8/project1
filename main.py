@@ -1,8 +1,5 @@
-import os
 import sys
 import pandas as pd
-import serpapi
-from dotenv import load_dotenv
 from datetime import datetime, date
 from zoneinfo import ZoneInfo
 
@@ -10,7 +7,7 @@ from rich.console import Console
 from rich.markdown import Markdown
 
 from src.flight import get_flight_data
-from src.places import calculate_max_results, get_top_attractions
+from src.places import get_top_attractions
 from src.weather import get_weather
 from src.genai import generate_itinerary
 from src.db import (
