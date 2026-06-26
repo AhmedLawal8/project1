@@ -9,11 +9,11 @@ from zoneinfo import ZoneInfo
 from rich.console import Console
 from rich.markdown import Markdown
 
-from flight import get_flight_data
-from places import calculate_max_results, get_top_attractions
-from weather import get_weather
-from genai import generate_itinerary
-from db import make_db, insert_itinerary, get_list_of_itineraries, get_itinerary, get_user, get_itineraries_count
+from src.flight import get_flight_data
+from src.places import calculate_max_results, get_top_attractions
+from src.weather import get_weather
+from src.genai import generate_itinerary
+from src.db import make_db, insert_itinerary, get_list_of_itineraries, get_itinerary, get_user, get_itineraries_count
 
 def main():
   console = Console()
@@ -233,4 +233,5 @@ def view_itineraries(session, username, console):
   print("\nFull Itinerary\n")
   console.print(Markdown(res))
 
-main()
+if __name__ == '__main__':
+  main()

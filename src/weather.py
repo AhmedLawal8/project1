@@ -1,7 +1,7 @@
 import requests
 import os
 
-from config import VISUAL_CROSSING_KEY
+from src.config import VISUAL_CROSSING_KEY
 
 def get_weather(origin_date, destination_date, lat, lon, place):
 

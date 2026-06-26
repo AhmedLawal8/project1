@@ -1,4 +1,4 @@
-from config import SERP_API_KEY
+from src.config import SERP_API_KEY
 import serpapi
 
 def get_flight_data(origin, destination, from_date, to_date):

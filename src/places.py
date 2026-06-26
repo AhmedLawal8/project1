@@ -2,7 +2,7 @@ import os
 import requests
 from datetime import datetime
 
-from config import GOOGLE_PLACES_API_KEY
+from src.config import GOOGLE_PLACES_API_KEY
 
 def calculate_max_results(start_date_str, end_date_str):
 

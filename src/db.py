@@ -1,8 +1,12 @@
 from sqlalchemy import create_engine, select, func, Column, Integer, String, Text, DateTime, Date
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime, timezone
+import os
 
-engine = create_engine('sqlite:///waypoint.db')
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+DB_PATH = os.path.join(BASE_DIR, "waypoint.db")
+
+engine = create_engine(f"sqlite:///{DB_PATH}")
 
 Base = declarative_base()
 

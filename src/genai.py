@@ -1,4 +1,4 @@
-from config import GEN_AI_KEY
+from src.config import GEN_AI_KEY
 from google import genai
 
 def generate_itinerary(flight_data, weather_data_origin, weather_data_destination, places):  
