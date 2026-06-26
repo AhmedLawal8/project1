@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, select, Column, Integer, String, DateTime, Date
+from sqlalchemy import create_engine, select, func, Column, Integer, String, DateTime, Date
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime
 
@@ -37,7 +37,7 @@ def insert_itinerary(session, username, origin, destination, start_date, end_dat
   session.add(new_itinerary)
   session.commit()
 
-def get_itineraries(session, username):
+def get_list_of_itineraries(session, username):
   statement = select(
     Waypoint.id,
     Waypoint.origin,
@@ -47,7 +47,7 @@ def get_itineraries(session, username):
     Waypoint.created_at
   ).where(Waypoint.username == username)
   
-  result = session.execute(statement)
+  result = session.execute(statement).scalars().all()
   return result
   
 def get_itinerary(session, username, itinerary_id):
@@ -61,5 +61,13 @@ def get_itinerary(session, username, itinerary_id):
       Waypoint.id == itinerary_id,
       Waypoint.username == username)
 
-  result = statement.execute(statement).one_or_none()
+  result = session.execute(statement).scalars().one_or_none()
   return result
+
+def get_user(session, username):
+  statement = select(Waypoint).where(Waypoint.username == username)
+  return session.execute(statement).scalars().first()
+
+def get_itineraries_count(session, username):
+  statement = select(func.count()).where(Waypoint.username == username)
+  return session.execute(statement).scalar()
