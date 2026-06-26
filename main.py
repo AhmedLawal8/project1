@@ -140,7 +140,48 @@ def create_itinerary(session, username):
   insert_itinerary(session, username, origin, destination, from_date, to_date, res)
   print("\n\nSaved to profile!")
 
+def view_itineraries(session, username):
+  itineraries = get_list_of_itineraries(session, username)
 
+  if not itineraries:
+    print("No itineraries found.")
+    return
+  
+  print("\nYour itineraries\n")
 
+  for row in itineraries:
+    print(f"""
+{row.id}. {row.origin} -> {row.destination}\n
+{row.start_date} -> {row.end_date}    
+    """)
+
+  valid_ids = {row.id for row in itineraries}
+
+  while True:
+    choice = input("\nEnter itinerary ID (or 'q' to quit): ")
+
+    if choice.lower() == "q":
+      return
+    
+    if not choice.isdigit():
+      print("Please enter a number")
+      continue
+    
+    choice = int(choice)
+
+    if choice not in valid_ids:
+      print("That ID doesnt exist. Try again")
+      continue
+
+    break
+
+  itinerary = get_itinerary(session, username, choice)
+
+  if not itinerary:
+    print("Could not retrieve itinerary")
+    return
+
+  print("\nFull Itinerary\n")
+  print(itinerary.itinerary)
 
 main()
