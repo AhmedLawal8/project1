@@ -18,7 +18,7 @@ Give Waypoint:
 
 It helps you plan multiple trips from start to finish and allows you to save them for later retrieval.
 
-From this, users can see a personalized itinerary using flight data, weather data, attractions at destination, and AI reasoning.
+From this, users can see a customized itinerary using flight data, weather data, attractions at destination, and reasoning.
 
 ## Getting Started
 
