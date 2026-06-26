@@ -18,7 +18,7 @@ class Waypoint(Base):
   itinerary = Column(String)
   created_at = Column(DateTime, default = datetime.utcnow)
 
-def make_db(DB_PATH = 'sqlite:///waypoint.db' ):
+def make_db():
   Base.metadata.create_all(engine)
   session_local = sessionmaker(bind = engine)
   return session_local()
