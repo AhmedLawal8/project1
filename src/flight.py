@@ -1,26 +1,10 @@
 from src.config import SERP_API_KEY
 import serpapi
 
-
-def get_flight_data(origin, destination, from_date, to_date):
-
-    client = serpapi.Client(api_key=SERP_API_KEY)
-
-    flight_data = client.search(
-        {
-            "engine": "google_flights",
-            "departure_id": origin,
-            "arrival_id": destination,
-            "currency": "USD",
-            "type": "1",
-            "outbound_date": from_date,
-            "return_date": to_date,
-        }
-    )
-
+def parse_flights(flight_data):
     flight_options = []
 
-    for flight in flight_data.get("best_flights", []):
+    for flight in flight_data:
 
         # Extract price and duration
         option = {
@@ -51,5 +35,59 @@ def get_flight_data(origin, destination, from_date, to_date):
 
         flight_options.append(option)
 
-    print("Generated Flight Options Sucess!")
     return flight_options
+
+def get_flight_data(origin, destination, from_date, to_date):
+
+    client = serpapi.Client(api_key=SERP_API_KEY)
+
+    outbound_data = client.search(
+        {
+            "engine": "google_flights",
+            "departure_id": origin,
+            "arrival_id": destination,
+            "currency": "USD",
+            "type": "1",
+            "outbound_date": from_date,
+            "return_date": to_date,
+        }
+    )
+
+    outbound_options = outbound_data.get("best_flights", [])
+
+    if not outbound_options:
+        print("No outbound flights found.")
+        return {"outbound": [], "return": []}
+
+    departure_token = outbound_options[0].get("departure_token")
+    best_outbound = parse_flights(outbound_options[:1])
+    
+    best_return = []
+
+    if departure_token:
+      return_data = client.search({
+        "engine": "google_flights",
+        "departure_id": origin,
+        "arrival_id": destination,
+        "currency": "USD",
+        "type": "1",
+        "outbound_date": from_date,
+        "return_date": to_date,
+        "departure_token": departure_token,
+      })
+
+      return_options = return_data.get("best_flights", [])
+
+      if not return_options:
+          print("No return flights found. ")
+      else:
+          best_return = parse_flights(return_options[:1])
+
+    else:
+        print("No departure token found, skipping return flight lookup.")
+
+    print("Generated Flight Options Sucess!")
+    return {"outbound" : best_outbound, "return" : best_return}
+    
+    
+

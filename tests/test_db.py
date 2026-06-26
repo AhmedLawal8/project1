@@ -21,7 +21,7 @@ class TestDB(unittest.TestCase):
 
         self.session = Session()
 
-    def test_insert_and_fetch(self):
+    def test_insert_and_get(self):
         insert_itinerary(
             self.session,
             "testuser",

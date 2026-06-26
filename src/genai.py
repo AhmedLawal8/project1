@@ -15,7 +15,7 @@ def generate_itinerary(
 
       Your task is to generate a clear, structured travel itinerary based on the data provided.
       You will be given:
-      1. A list of Flight Information that includes (price, duration, routes from and to targeted destination, times, airline, and airplane)
+      1. Flight information containing one outbound flight and one return flight, each with (price, duration, routes, times, airline, and airplane)
       2. Weather information for the origin location
       3. Weather forecast for the destination for the travel dates
       4. A list of recommended places/attractions at the destination
@@ -38,6 +38,7 @@ def generate_itinerary(
 
       FLIGHT SUMMARY:
       - Key outbound flight details
+      - Return flight details
 
       WEATHER SUMMARY:
       - Origin weather (departure day)
@@ -65,8 +66,9 @@ def generate_itinerary(
         input=f"""
       Input Data:
       
-      POSSIBLE FLIGHTS: 
-      {flight_data}
+      FLIGHTS: 
+      OUTBOUND: {flight_data["outbound"]}
+      RETURN: {flight_data["return"]}
       
       ORIGIN WEATHER:
       {weather_data_origin} 
