@@ -29,10 +29,10 @@ def generate_itinerary(flight_data, weather_data_origin, weather_data_destinatio
       - If weather is uncertain, mention flexibility in plans.
       
       Output Format:
-      Return a structured response in this format:
+      Return a structured response in this format while bolding key information:
 
       TITLE:
-      - Trip summary (origin → destination + dates)
+      - Trip summary (origin → destination + dates (am/pm))
 
       FLIGHT SUMMARY:
       - Key outbound flight details

@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine, select, func, Column, Integer, String, DateTime, Date
+from sqlalchemy import create_engine, select, func, Column, Integer, String, Text, DateTime, Date
 from sqlalchemy.orm import declarative_base, sessionmaker
-from datetime import datetime
+from datetime import datetime, timezone
 
 engine = create_engine('sqlite:///waypoint.db')
 
@@ -15,7 +15,7 @@ class Waypoint(Base):
   destination = Column(String)
   start_date = Column(Date)
   end_date = Column(Date)
-  itinerary = Column(String)
+  itinerary = Column(Text)
   created_at = Column(DateTime, default = datetime.utcnow)
 
 def make_db():
@@ -38,28 +38,13 @@ def insert_itinerary(session, username, origin, destination, start_date, end_dat
   session.commit()
 
 def get_list_of_itineraries(session, username):
-  statement = select(
-    Waypoint.id,
-    Waypoint.origin,
-    Waypoint.destination,
-    Waypoint.start_date,
-    Waypoint.end_date,
-    Waypoint.created_at
-  ).where(Waypoint.username == username)
+  statement = select(Waypoint).where(Waypoint.username == username)
   
   result = session.execute(statement).scalars().all()
   return result
   
 def get_itinerary(session, username, itinerary_id):
-  statement = select(
-    Waypoint.origin,
-    Waypoint.destination,
-    Waypoint.start_date,
-    Waypoint.end_date,
-    Waypoint.itinerary
-    ).where(
-      Waypoint.id == itinerary_id,
-      Waypoint.username == username)
+  statement = select(Waypoint).where( Waypoint.id == itinerary_id, Waypoint.username == username)
 
   result = session.execute(statement).scalars().one_or_none()
   return result
