@@ -1,6 +1,8 @@
-pandas==2.0.2
-python-dotenv==1.2.2
-requests==2.34.2
-rich==15.0.0
-serpapi==1.0.2
-SQLAlchemy==2.0.16
+pandas
+python-dotenv
+requests
+rich
+sqlalchemy
+serpapi
+google-genai
+flake8
