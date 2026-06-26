@@ -1,14 +1,16 @@
 from src.config import GEN_AI_KEY
 from google import genai
 
-def generate_itinerary(flight_data, weather_data_origin, weather_data_destination, places):  
 
-  client = genai.Client(api_key=GEN_AI_KEY)
+def generate_itinerary(
+    flight_data, weather_data_origin, weather_data_destination, places
+):
 
-  interaction = client.interactions.create(
-      model="gemini-2.5-flash",
+    client = genai.Client(api_key=GEN_AI_KEY)
 
-      system_instruction = f"""
+    interaction = client.interactions.create(
+        model="gemini-2.5-flash",
+        system_instruction="""
       You are a professional travel planning assistant.
 
       Your task is to generate a clear, structured travel itinerary based on the data provided.
@@ -60,8 +62,7 @@ def generate_itinerary(flight_data, weather_data_origin, weather_data_destinatio
       - Travel optimization tips
       - Any warnings or considerations
       """,
-
-      input= f"""
+        input=f"""
       Input Data:
       
       POSSIBLE FLIGHTS: 
@@ -76,16 +77,7 @@ def generate_itinerary(flight_data, weather_data_origin, weather_data_destinatio
       PLACES DATA: 
       {places}
       
-      """
-  )
+      """,
+    )
 
-  return interaction.output_text
-
-
-
-
-
-
-
-
-
+    return interaction.output_text
